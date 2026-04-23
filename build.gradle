@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+    id 'war' // Web Application Archive(.war)를 만들기 위한 플러그인
+}
+
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+// JSP와 Servlet 컴파일에 필요한 라이브러리 (톰캣 안에 이미 있으므로 providedCompile 사용)
+dependencies {
+    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+    providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
+}
