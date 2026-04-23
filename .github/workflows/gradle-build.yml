@@ -24,7 +24,7 @@ jobs:
         gradle-version: '8.5' 
         
     - name: 4. WAR 파일로 빌드하기
-      run: .\gradlew.bat build
+      run: gradle build
       
     - name: 5. 톰캣으로 자동 배포하기
       run: Copy-Item -Path "build\libs\*.war" -Destination "D:\apache-tomcat-8.0.32\webapps\ROOT.war" -Force
