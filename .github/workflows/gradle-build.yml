@@ -1,4 +1,4 @@
-name: Java CI with Gradle (WAR Build)
+name: Java CI with Gradle (Local Tomcat Deploy)
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, windows]
     
     steps:
     - name: 1. 저장소에서 코드 가져오기
@@ -18,13 +18,13 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: 3. Gradle 세팅하기 (gradlew 파일이 없으므로 버전 강제 지정)
+    - name: 3. Gradle 세팅하기
       uses: gradle/actions/setup-gradle@v3
       with:
         gradle-version: '8.5' 
         
     - name: 4. WAR 파일로 빌드하기
-      run: gradle build 
+      run: .\gradlew.bat build
       
-    - name: 5. 만들어진 WAR 파일 확인하기
-      run: ls -la build/libs/
+    - name: 5. 톰캣으로 자동 배포하기
+      run: Copy-Item -Path "build\libs\*.war" -Destination "D:\apache-tomcat-8.0.32\webapps\ROOT.war" -Force

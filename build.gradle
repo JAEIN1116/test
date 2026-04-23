@@ -16,7 +16,7 @@ dependencies {
 }
 
 gretty {
-    httpPort = 8580
+    httpPort = 8080
     contextPath = '/'
     servletContainer = 'tomcat9'
 }
