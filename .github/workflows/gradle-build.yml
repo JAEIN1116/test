@@ -11,7 +11,7 @@ jobs:
     steps:
     - name: 0. 기존 구동 중인 서버 종료 (파일 잠금 해제)
       run: |
-        $port = 8080
+        $port = 18080
         $tcpConnections = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
         if ($tcpConnections) {
             $pidToKill = $tcpConnections[0].OwningProcess
@@ -35,13 +35,15 @@ jobs:
         gradle-version: '8.5' 
         
     - name: 4. Spring Boot 실행 파일(JAR) 빌드하기
-      run: gradle build
+      run: gradle build -x test
 
     - name: 5. 구동 중인 이전 서버 종료 및 새 서버 백그라운드 실행
       env:
         RUNNER_TRACKING_ID: ""
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        GEMINI_API_URL: ${{ secrets.GEMINI_API_URL }}
       run: |
-        $port = 8080
+        $port = 18080
         $tcpConnections = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
         if ($tcpConnections) {
             $pidToKill = $tcpConnections[0].OwningProcess
@@ -53,5 +55,9 @@ jobs:
         }
         
         Write-Host "새로운 Spring Boot 서버를 백그라운드에서 시작합니다..."
-        Start-Process -FilePath "java" -ArgumentList "-jar build\libs\test-1.0.jar" -WindowStyle Hidden
+        # 환경 변수를 자바 실행 시 직접 전달
+        $env:GEMINI_API_KEY = "${{ secrets.GEMINI_API_KEY }}"
+        $env:GEMINI_API_URL = "${{ secrets.GEMINI_API_URL }}"
+        
+        Start-Process -FilePath "java" -ArgumentList "-Dgemini.api.key=$env:GEMINI_API_KEY", "-Dgemini.api.url=$env:GEMINI_API_URL", "-jar", "build\libs\test-1.0.jar" -WindowStyle Hidden
         Write-Host "서버 배포 완료!"

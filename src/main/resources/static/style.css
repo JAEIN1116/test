@@ -80,13 +80,39 @@ header h1 {
 }
 
 .message {
-    max-width: 80%;
+    max-width: 85%;
     padding: 14px 18px;
     border-radius: 18px;
     font-size: 0.95rem;
     line-height: 1.6;
     position: relative;
     animation: fadeIn 0.3s ease-out;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--glass-border);
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--glass-border);
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.msg-content {
+    flex: 1;
 }
 
 @keyframes fadeIn {
@@ -100,6 +126,7 @@ header h1 {
     color: white;
     border-bottom-right-radius: 4px;
     box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+    flex-direction: row-reverse; /* 유저는 아바타가 오른쪽에 오도록 */
 }
 
 .ai-message {

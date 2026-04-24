@@ -14,14 +14,26 @@ document.addEventListener('DOMContentLoaded', () => {
         msgDiv.classList.add('message');
         msgDiv.classList.add(isUser ? 'user-message' : 'ai-message');
         
+        // 아바타 추가
+        const avatarDiv = document.createElement('div');
+        avatarDiv.classList.add('avatar');
+        const img = document.createElement('img');
+        img.src = isUser ? 'user-avatar.png' : 'jane-avatar.png';
+        img.onerror = () => { avatarDiv.innerHTML = isUser ? '👤' : '🤖'; }; // 이미지 없으면 이모지로 대체
+        avatarDiv.appendChild(img);
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('msg-content');
+        
+        msgDiv.appendChild(avatarDiv);
+        msgDiv.appendChild(contentDiv);
+        
         if (isUser || isHistory) {
-            // 유저 메시지나 히스토리는 즉시 출력 (마크다운 적용)
-            msgDiv.innerHTML = isUser ? message : marked.parse(message);
+            contentDiv.innerHTML = isUser ? message : marked.parse(message);
             chatBox.appendChild(msgDiv);
         } else {
-            // AI의 새 메시지는 타이핑 효과 적용
             chatBox.appendChild(msgDiv);
-            typeWriter(msgDiv, message);
+            typeWriter(contentDiv, message);
         }
         
         chatBox.scrollTop = chatBox.scrollHeight;
@@ -31,11 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function typeWriter(element, text) {
         let i = 0;
         element.innerHTML = '';
-        const speed = 20; // 타이핑 속도 (ms)
+        const speed = 20;
 
         function type() {
             if (i < text.length) {
-                // 한 글자씩 추가하되, 마크다운 렌더링을 위해 전체를 다시 파싱
                 element.innerHTML = marked.parse(text.substring(0, i + 1));
                 i++;
                 chatBox.scrollTop = chatBox.scrollHeight;
@@ -49,7 +60,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const indicator = document.createElement('div');
         indicator.id = 'typing-indicator';
         indicator.classList.add('message', 'ai-message', 'typing');
-        indicator.innerHTML = '<span></span><span></span><span></span>';
+        
+        const avatarDiv = document.createElement('div');
+        avatarDiv.classList.add('avatar');
+        avatarDiv.innerHTML = '🤖';
+        
+        const dotsDiv = document.createElement('div');
+        dotsDiv.classList.add('msg-content');
+        dotsDiv.innerHTML = '<span></span><span></span><span></span>';
+        
+        indicator.appendChild(avatarDiv);
+        indicator.appendChild(dotsDiv);
+        
         chatBox.appendChild(indicator);
         chatBox.scrollTop = chatBox.scrollHeight;
         return indicator;
