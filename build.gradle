@@ -1,22 +1,22 @@
-plugins {
+﻿plugins {
     id 'java'
-    id 'war'
-    id 'org.gretty' version '3.1.1' // 로컬 톰캣 테스트용 플러그인
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
+group = 'com.test'
 version = '1.0'
+sourceCompatibility = '17'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
-    providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
-gretty {
-    httpPort = 8080
-    contextPath = '/'
-    servletContainer = 'tomcat9'
+tasks.named('test') {
+    useJUnitPlatform()
 }
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Dynamic Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        <div class="glass-card">
+            <h1>🌱 Spring Boot 백엔드 전환 성공! 🚀</h1>
+            <p>This page is now powered by Spring Boot Embedded Tomcat.</p>
+
+            <div style="margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.1); border-radius: 8px;">
+                <strong>Server Status:</strong> <span id="server-status" style="color: #4ade80;">로딩 중...</span><br>
+                <strong>Server Time:</strong> <span id="server-time">로딩 중...</span>
+            </div>
+
+            <p id="api-result" style="font-size: 0.9em; color: #facc15; margin-bottom: 15px;"></p>
+
+            <button id="action-btn" class="glow-btn">Call Spring Boot API</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // 화면 로딩 시 자동으로 Spring Boot API를 호출하여 시간 갱신
+        fetch('/api/status')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('server-status').innerText = data.serverStatus;
+                document.getElementById('server-time').innerText = data.currentTime;
+            })
+            .catch(err => {
+                document.getElementById('server-status').innerText = '서버 연결 실패';
+                document.getElementById('server-status').style.color = '#ef4444';
+                document.getElementById('server-time').innerText = '-';
+            });
+    </script>
+</body>
+</html>
