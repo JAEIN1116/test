@@ -41,7 +41,6 @@ jobs:
       env:
         RUNNER_TRACKING_ID: ""
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        GEMINI_API_URL: ${{ secrets.GEMINI_API_URL }}
       run: |
         $port = 18080
         $tcpConnections = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
@@ -55,9 +54,9 @@ jobs:
         }
         
         Write-Host "새로운 Spring Boot 서버를 백그라운드에서 시작합니다..."
-        # 환경 변수를 자바 실행 시 직접 전달
+        # 환경 변수 설정
         $env:GEMINI_API_KEY = "${{ secrets.GEMINI_API_KEY }}"
-        $env:GEMINI_API_URL = "${{ secrets.GEMINI_API_URL }}"
         
-        Start-Process -FilePath "java" -ArgumentList "-Dgemini.api.key=$env:GEMINI_API_KEY", "-Dgemini.api.url=$env:GEMINI_API_URL", "-jar", "build\libs\test-1.0.jar" -WindowStyle Hidden
+        # -D 옵션으로 스프링 설정값 전달
+        Start-Process -FilePath "java" -ArgumentList "-Dgemini.api.key=$env:GEMINI_API_KEY", "-jar", "build\libs\test-1.0.jar" -WindowStyle Hidden
         Write-Host "서버 배포 완료!"
