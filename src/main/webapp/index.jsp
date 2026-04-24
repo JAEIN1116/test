@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<% 
-    // 서버에서 렌더링되는 시점의 정보를 가져옵니다. 
-    String serverStatus="Tomcat Server is Running!"; 
-    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-    String currentTime=sdf.format(new java.util.Date()); 
-%>
+    <% // 서버에서 렌더링되는 시점의 정보를 가져옵니다. String serverStatus="Tomcat Server is Running!" ; java.text.SimpleDateFormat sdf=new
+        java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); String currentTime=sdf.format(new java.util.Date()); %>
         <!DOCTYPE html>
         <html lang="en">
 
@@ -18,9 +14,6 @@
         </head>
 
         <body>
-            <%-- 만약 이 파일을 브라우저에서 직접 더블클릭해서 열면 
-         위의 스크립틀릿 코드가 그대로 텍스트로 노출되어 화면이 깨지거나 동작하지 않습니다. --%>
-
             <div class="background-elements">
                 <div class="blob blob-1"></div>
                 <div class="blob blob-2"></div>
