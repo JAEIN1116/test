@@ -1,37 +1,61 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('action-btn');
-    
-    btn.addEventListener('click', async () => {
-        btn.textContent = 'Loading...';
-        btn.style.transform = 'scale(0.95)';
-        
-        try {
-            // 서버(Spring Boot)로 API 요청을 보냅니다.
-            const response = await fetch('/api/status');
-            
-            if (!response.ok) throw new Error('Network response was not ok');
-            const data = await response.json();
-            
-            document.getElementById('api-result').innerHTML = 
-                `API Success! <br> Status: ${data.serverStatus} <br> Time: ${data.currentTime}`;
-            
-            btn.textContent = 'Success!';
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('api-result').innerHTML = 
-                '❌ Failed! Spring Boot server is NOT responding properly.';
-            btn.textContent = 'Error!';
+    const sendBtn = document.getElementById('send-btn');
+    const chatInput = document.getElementById('chat-input');
+    const chatBox = document.getElementById('chat-box');
+
+    function appendMessage(text, isUser) {
+        const msgDiv = document.createElement('div');
+        msgDiv.textContent = text;
+        msgDiv.style.padding = '8px 12px';
+        msgDiv.style.borderRadius = '12px';
+        msgDiv.style.maxWidth = '80%';
+        msgDiv.style.wordBreak = 'break-word';
+
+        if (isUser) {
+            msgDiv.style.alignSelf = 'flex-end';
+            msgDiv.style.background = 'rgba(74, 222, 128, 0.2)'; // 연한 녹색 (사용자)
+            msgDiv.style.borderBottomRightRadius = '0';
+        } else {
+            msgDiv.style.alignSelf = 'flex-start';
+            msgDiv.style.background = 'rgba(99, 102, 241, 0.2)'; // 보라색 (AI)
+            msgDiv.style.borderBottomLeftRadius = '0';
         }
 
-        setTimeout(() => {
-            btn.style.transform = 'scale(1)';
-        }, 150);
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-        setTimeout(() => {
-            btn.textContent = 'Call Spring Boot API';
-        }, 2000);
-        
-        createBurst(btn);
+    async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        appendMessage(text, true);
+        chatInput.value = '';
+        sendBtn.disabled = true;
+        sendBtn.textContent = '...';
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+
+            if (!response.ok) throw new Error('API Error');
+            const data = await response.json();
+            appendMessage(data.reply, false);
+        } catch (error) {
+            console.error('Error:', error);
+            appendMessage('❌ 에러 발생: 서버와 통신할 수 없습니다.', false);
+        } finally {
+            sendBtn.disabled = false;
+            sendBtn.textContent = '전송';
+        }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
     });
 
     function createBurst(element) {
