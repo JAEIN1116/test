@@ -14,6 +14,8 @@ public class ChatMessage {
     private Long id;
 
     private String sender; // USER or AI
+
+    @jakarta.persistence.Column(columnDefinition = "TEXT")
     private String message;
     private LocalDateTime timestamp;
 
