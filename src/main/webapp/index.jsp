@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <% // 서버에서 렌더링되는 시점의 정보를 가져옵니다. String serverStatus="Tomcat Server is Running!" ; java.text.SimpleDateFormat sdf=new
-        java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); String currentTime=sdf.format(new java.util.Date()); %>
+<% 
+    // 서버에서 렌더링되는 시점의 정보를 가져옵니다. 
+    String serverStatus="Tomcat Server is Running!"; 
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+    String currentTime=sdf.format(new java.util.Date()); 
+%>
         <!DOCTYPE html>
         <html lang="en">
 
