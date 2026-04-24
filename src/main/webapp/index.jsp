@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<% 
-    String serverStatus="Tomcat Server is Running!"; 
-    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-    String currentTime=sdf.format(new java.util.Date()); 
-%>
+    <% String serverStatus="Tomcat Server is Running!" ; java.text.SimpleDateFormat sdf=new
+        java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); String currentTime=sdf.format(new java.util.Date()); %>
         <!DOCTYPE html>
         <html lang="en">
 
@@ -24,7 +21,7 @@
 
             <div class="container">
                 <div class="glass-card">
-                    <h1>🎉 자동 배포 테스트 성공!! 🚀</h1>
+                    <h1>✨ 100% 자동 배포 완벽 성공!! 🥳</h1>
                     <p>This page is now powered by Java and Tomcat.</p>
 
                     <div style="margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.1); border-radius: 8px;">
