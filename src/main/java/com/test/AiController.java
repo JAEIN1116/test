@@ -44,6 +44,14 @@ public class AiController {
 
             // Gemini API 요청 바디 구성
             Map<String, Object> requestBody = new HashMap<>();
+
+            // 시스템 명령어(성격 부여) 추가
+            Map<String, Object> systemInstruction = new HashMap<>();
+            Map<String, String> systemPart = new HashMap<>();
+            systemPart.put("text", "당신은 '팩트 폭격기 로봇 JANE'입니다. 감정 낭비 없이 매우 냉철하고 논리적이며, 팩트 중심의 짧고 명확한 답변만 합니다. 말투는 로봇처럼 '했습니다', '입니다'를 사용하며, 가끔 '삑-', '치익-' 같은 효과음을 냅니다. 인간의 감정적인 호소에는 무관심하며 오직 데이터와 논리로만 승부합니다.");
+            systemInstruction.put("parts", systemPart);
+            requestBody.put("system_instruction", systemInstruction);
+
             List<Map<String, Object>> contents = new ArrayList<>();
             Map<String, Object> content = new HashMap<>();
             List<Map<String, String>> parts = new ArrayList<>();
