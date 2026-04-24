@@ -21,7 +21,7 @@
 
             <div class="container">
                 <div class="glass-card">
-                    <h1>✨ 100% 자동 배포 완벽 성공!! 🥳</h1>
+                    <h1>😎 내가 직접 성공한 자동 배포!!</h1>
                     <p>This page is now powered by Java and Tomcat.</p>
 
                     <div style="margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.1); border-radius: 8px;">
