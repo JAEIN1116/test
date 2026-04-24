@@ -9,6 +9,17 @@ jobs:
     runs-on: [self-hosted, windows]
     
     steps:
+    - name: 0. 기존 구동 중인 서버 종료 (파일 잠금 해제)
+      run: |
+        $port = 8080
+        $tcpConnections = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
+        if ($tcpConnections) {
+            $pidToKill = $tcpConnections[0].OwningProcess
+            Stop-Process -Id $pidToKill -Force -ErrorAction SilentlyContinue
+            Start-Sleep -Seconds 2
+        }
+      continue-on-error: true
+
     - name: 1. 저장소에서 코드 가져오기
       uses: actions/checkout@v4
       
