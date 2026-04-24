@@ -6,21 +6,20 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.style.transform = 'scale(0.95)';
         
         try {
-            // 서버(Tomcat)로 API 요청을 보냅니다.
-            const response = await fetch('api.jsp');
+            // 서버(Spring Boot)로 API 요청을 보냅니다.
+            const response = await fetch('/api/status');
             
-            // 톰캣이 켜져있지 않거나, 단순히 HTML 파일로 열었을 경우 JSON 파싱 에러가 발생합니다.
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
             
             document.getElementById('api-result').innerHTML = 
-                `API Success: ${data.message} <br> Time: ${data.serverTime}`;
+                `API Success! <br> Status: ${data.serverStatus} <br> Time: ${data.currentTime}`;
             
             btn.textContent = 'Success!';
         } catch (error) {
             console.error('Error:', error);
             document.getElementById('api-result').innerHTML = 
-                '❌ Failed! Tomcat server is NOT running or you opened the file directly.';
+                '❌ Failed! Spring Boot server is NOT responding properly.';
             btn.textContent = 'Error!';
         }
 
@@ -29,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 150);
 
         setTimeout(() => {
-            btn.textContent = 'Call Tomcat API';
+            btn.textContent = 'Call Spring Boot API';
         }, 2000);
         
         createBurst(btn);
