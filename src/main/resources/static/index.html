@@ -1,56 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spring Boot Dynamic Page</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Gemini AI Premium Chat</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <!-- Marked.js for Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="background-elements">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-    </div>
-
-    <div class="container">
-        <div class="glass-card">
-            <h1>✨ 나만의 미니 AI 챗봇 🤖</h1>
-            <p>Powered by Spring Boot & Gemini AI</p>
-
-            <div style="margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.1); border-radius: 8px;">
-                <strong>Server Status:</strong> <span id="server-status" style="color: #4ade80;">로딩 중...</span><br>
-                <strong>Server Time:</strong> <span id="server-time">로딩 중...</span>
-            </div>
-
-            <!-- 챗봇 UI 영역 -->
-            <div id="chat-box" style="height: 200px; overflow-y: auto; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 15px; margin-bottom: 15px; text-align: left; display: flex; flex-direction: column; gap: 10px;">
-                <div style="align-self: flex-start; background: rgba(99, 102, 241, 0.2); padding: 8px 12px; border-radius: 12px; border-bottom-left-radius: 0; max-width: 80%;">
-                    안녕하세요! 무엇이든 물어보세요!
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="chat-input" placeholder="질문을 입력하세요..." style="flex: 1; padding: 10px; border-radius: 8px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none;">
-                <button id="send-btn" class="glow-btn" style="padding: 10px 20px; font-size: 1rem;">전송</button>
-            </div>
+    <div id="chat-container">
+        <header>
+            <h1>Gemini AI Assistant</h1>
+        </header>
+        <div id="chat-box">
+            <!-- Messages will appear here -->
+        </div>
+        <div id="input-container">
+            <input type="text" id="chat-input" placeholder="메시지를 입력하세요..." autocomplete="off">
+            <button id="send-btn">전송</button>
         </div>
     </div>
-
     <script src="script.js"></script>
-    <script>
-        // 화면 로딩 시 자동으로 Spring Boot API를 호출하여 시간 갱신
-        fetch('/api/status')
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('server-status').innerText = data.serverStatus;
-                document.getElementById('server-time').innerText = data.currentTime;
-            })
-            .catch(err => {
-                document.getElementById('server-status').innerText = '서버 연결 실패';
-                document.getElementById('server-status').style.color = '#ef4444';
-                document.getElementById('server-time').innerText = '-';
-            });
-    </script>
 </body>
 </html>
