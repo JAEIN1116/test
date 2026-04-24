@@ -53,6 +53,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 페이지 로드 시 기존 대화 내역 불러오기
+    async function loadHistory() {
+        try {
+            const response = await fetch('/api/history');
+            if (response.ok) {
+                const history = await response.json();
+                chatBox.innerHTML = ''; // 기존 "안녕하세요" 메시지 등 초기화
+                history.forEach(chat => {
+                    appendMessage(chat.message, chat.sender === 'USER');
+                });
+                if (history.length === 0) {
+                    appendMessage('안녕하세요! 무엇이든 물어보세요!', false);
+                }
+            }
+        } catch (error) {
+            console.error('History load failed:', error);
+        }
+    }
+
+    loadHistory();
+
     sendBtn.addEventListener('click', sendMessage);
     chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();

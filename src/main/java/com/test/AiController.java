@@ -22,11 +22,24 @@ public class AiController {
     @Value("${gemini.api.url}")
     private String apiUrl;
 
+    private final ChatMessageRepository chatRepository;
     private final RestTemplate restTemplate = new RestTemplate();
+
+    public AiController(ChatMessageRepository chatRepository) {
+        this.chatRepository = chatRepository;
+    }
+
+    @GetMapping("/history")
+    public List<ChatMessage> getHistory() {
+        return chatRepository.findAllByOrderByTimestampAsc();
+    }
 
     @PostMapping("/chat")
     public ChatResponse chat(@RequestBody ChatRequest request) {
         try {
+            // 1. 사용자 질문 DB 저장
+            chatRepository.save(new ChatMessage("USER", request.getMessage()));
+
             String url = apiUrl + "?key=" + apiKey;
 
             // Gemini API 요청 바디 구성
@@ -57,6 +70,10 @@ public class AiController {
                 Map<String, Object> resContent = (Map<String, Object>) candidate.get("content");
                 List<Map<String, String>> resParts = (List<Map<String, String>>) resContent.get("parts");
                 String aiReply = resParts.get(0).get("text");
+                
+                // 2. AI 대답 DB 저장
+                chatRepository.save(new ChatMessage("AI", aiReply));
+
                 return new ChatResponse(aiReply);
             }
 
